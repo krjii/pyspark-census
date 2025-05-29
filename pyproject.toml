@@ -1,0 +1,55 @@
+[tool.poetry]
+name = "pyspark-census"
+version = "0.1.0"
+description = "US Census Data ETL using pyspark for large scale distributed processing"
+authors = ["Kevin James <krjii@indyhustles.com>"]
+keywords = ["PySpark", "ETL", "Census"]
+license = "MIT"
+packages = [
+    { include = "pyspark_census", from = "src" }
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10"
+]
+
+[tool.poetry.dependencies]
+python = ">=3.10"
+pyspark = "^3.5.5"
+pandas = "^2.2.3"
+numpy = "^2.2.6"
+scikit-learn = "^1.6.1"
+scipy = "^1.15.3"
+hdbscan = "^0.8.40"
+seaborn = "^0.13.2"
+matplotlib = "^3.10.3"
+mkdocs = "*"
+mkdocs-material = "*"
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.1"
+isort = "^5.13"
+pytest = "^8.2"
+coverage = "^7.5"
+build = "*"
+twine = "*"
+
+[tool.poetry.extras]
+dev = ["black", "isort", "build", "twine"]
+test = ["pytest", "coverage"]
+docs = ["mkdocs", "mkdocstrings"]
+
+[tool.poetry.urls]
+Repository = "https://github.com/krjii/pyspark-census.git"
+
+[tool.black]
+line-length = 88
+
+[tool.isort]
+profile = "black"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
