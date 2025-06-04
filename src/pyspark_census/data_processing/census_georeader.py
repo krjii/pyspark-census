@@ -53,9 +53,6 @@ class CensusGeoReader():
             if isinstance(data_record, tuple):
                 unique_id, year = data_record[0]
                 new_record = data_record[1]
-                new_record["unique_id"] = unique_id
-                new_record["ds"] =  f"{year}-01-01"
-                new_record["year"] = year
                 
                 records.append(new_record)
             else:
@@ -67,11 +64,7 @@ class CensusGeoReader():
                         continue
             
                     try:
-                        record = {
-                            "unique_id": unique_id,
-                            "ds": f"{year}-01-01",
-                            "year": year
-                        }
+                        record = {}
             
                         # Only include provided feature keys (if any)
                         for key in feature_keys:
@@ -81,8 +74,8 @@ class CensusGeoReader():
                     except Exception as e:
                         print(f"[ERROR] Failed to process {keys}: {e}")
         
-        return sorted(records, key=lambda d: d["ds"])
-  
+        return records
+    
     def filter_geos_missing_years(self, long_rdd, n_consecutive_years = None):
         if n_consecutive_years is None:
             unique_years = long_rdd.map(lambda x: x[0][1]).countByValue()
