@@ -119,23 +119,7 @@ class ExploratoryAnalyzer(object):
             plt.grid(True)
             plt.tight_layout()
             plt.show(block=True)
-        
-        print()
-        
-        #Collect values for plotting
-        #raw_values = [v for (y, v) in raw_feature_rdd.collect()]
 
-        #Plot distribution
-        # plt.figure(figsize=(12, 6))
-        # plt.hist(raw_values, bins=50, color='skyblue', edgecolor='black', alpha=0.7)
-        # plt.title("Distribution of B19013_001E (Raw Feature Values from merged_rdd)")
-        # plt.xlabel("Value")
-        # plt.ylabel("Frequency")
-        # plt.grid(True)
-        # plt.tight_layout()
-        #
-        # plt.show(block=True)
-        
     @staticmethod
     def is_valid_number(v):
         if v is None:
@@ -284,47 +268,6 @@ class ExploratoryAnalyzer(object):
         output_files = os.listdir("./exploratory")
         output_files
 
-    def feature_record(self, feature_dict, feature_keys=None):
-        """
-        Convert a dict of {(unique_id, year): feature_dict} into a list of records.
-    
-        Args:
-            feature_dict (dict): {(unique_id, year): {feature_key: value, ...}}
-            feature_keys (list): Optional list of keys to include from the features
-    
-        Returns:
-            List of dicts sorted by 'ds' field (e.g., '2013-01-01')
-        """
-        feature_keys = feature_keys or []
-        records = []
-    
-        for keys, features in feature_dict.items():
-            if isinstance(keys, tuple) and len(keys) >= 2:
-                unique_id, year = keys[0], keys[1]
-            else:
-                print(f"[SKIP] Unexpected key format: {keys}")
-                continue
-    
-            if not isinstance(features, dict):
-                print(f"[SKIP] Values not a dict: {features}")
-                continue
-    
-            try:
-                record = {
-                    "unique_id": unique_id,
-                    "ds": f"{year}-01-01",
-                    "year": year
-                }
-    
-                # Only include provided feature keys (if any)
-                for key in feature_keys:
-                    record[key] = features.get(key, None)
-    
-                records.append(record)
-            except Exception as e:
-                print(f"[ERROR] Failed to process {keys}: {e}")
-    
-        return sorted(records, key=lambda d: d["ds"])
 
     def plot_eda(self, records):
         """

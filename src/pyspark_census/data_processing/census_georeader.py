@@ -35,6 +35,54 @@ class CensusGeoReader():
         self.essential_fields = desired_features + ['GEO_ID', 'NAME', 'region', 'state', 'year']
             
 
+    def feature_record(self, feature_data, feature_keys=None):
+        """
+        Convert a dict of {(unique_id, year): feature_dict} into a list of records.
+    
+        Args:
+            feature_dict (dict): {(unique_id, year): {feature_key: value, ...}}
+            feature_keys (list): Optional list of keys to include from the features
+    
+        Returns:
+            List of dicts sorted by 'ds' field (e.g., '2013-01-01')
+        """
+        feature_keys = feature_keys or []
+        records = []
+    
+        for data_record in feature_data:
+            if isinstance(data_record, tuple):
+                unique_id, year = data_record[0]
+                new_record = data_record[1]
+                new_record["unique_id"] = unique_id
+                new_record["ds"] =  f"{year}-01-01"
+                new_record["year"] = year
+                
+                records.append(new_record)
+            else:
+          
+                for keys, features in data_record.items():
+        
+                    if not isinstance(features, dict):
+                        print(f"[SKIP] Values not a dict: {features}")
+                        continue
+            
+                    try:
+                        record = {
+                            "unique_id": unique_id,
+                            "ds": f"{year}-01-01",
+                            "year": year
+                        }
+            
+                        # Only include provided feature keys (if any)
+                        for key in feature_keys:
+                            record[key] = features.get(key, None)
+            
+                        records.append(record)
+                    except Exception as e:
+                        print(f"[ERROR] Failed to process {keys}: {e}")
+        
+        return sorted(records, key=lambda d: d["ds"])
+  
     def filter_geos_missing_years(self, long_rdd, n_consecutive_years = None):
         if n_consecutive_years is None:
             unique_years = long_rdd.map(lambda x: x[0][1]).countByValue()
