@@ -1,11 +1,8 @@
 
+import matplotlib.pyplot as plt
 from pyspark.storagelevel import StorageLevel
 from scipy.stats.mstats import winsorize
 
-import matplotlib
-matplotlib.use('TkAgg')
-
-import matplotlib.pyplot as plt
 import numpy as np
 import os
 import pandas as pd

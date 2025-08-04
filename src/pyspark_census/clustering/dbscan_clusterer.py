@@ -3,12 +3,10 @@ Created on May 30, 2025
 
 @author: kevinrjamesii
 '''
+import matplotlib.pyplot as plt
 from sklearn.cluster import DBSCAN
 from sklearn.decomposition import PCA
 import seaborn as sns
-import matplotlib
-import matplotlib.pyplot as plt
-matplotlib.use('TkAgg')
 
 import logging
 

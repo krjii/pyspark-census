@@ -3,11 +3,7 @@ Created on May 23, 2025
 
 @author: kevinrjamesii
 '''
-
-import matplotlib
 import matplotlib.pyplot as plt
-matplotlib.use('TkAgg')
-
 import numpy as np
 import seaborn as sns
 from sklearn.metrics import silhouette_samples
